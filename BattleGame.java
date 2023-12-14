@@ -211,11 +211,11 @@ private static void performAttack(Character attacker, Character defender, int se
     int damage;
     if (round == 4 && attacker == winnerOfRound3) {
         damage = 8; // Ability damage for winner of Round 3
-        System.out.println(attacker.name + " uses their ability for " + damage + " damage!");
+        System.out.println(attacker.name + " uses their ability '" + attacker.ability + "' for " + damage + " damage!");
     } else {
         // Default attack logic based on the round
         damage = calculateDefaultDamage(round);
-        System.out.println(attacker.name + " attacks with weapon for " + damage + " damage!");
+        System.out.println(attacker.name + " attacks with their weapon '" + attacker.weapon + "' for " + damage + " damage!");
     }
 
     defender.health -= damage;
@@ -237,22 +237,41 @@ private static int calculateDefaultDamage(int round) {
 
 
 private static int selectNumber(int player) {
+    int selectedNumber = 0;
+    boolean validNumber = false;
+
     String playerName = player == 1 ? player1Name : player2Name;
-    System.out.print(playerName + ", select a number between 1-10 (or enter -1 to quit): ");
-    System.out.print("Player " + player + ", select a number between 1-10 (or enter -1 to quit): ");
-    int selectedNumber = scanner.nextInt();
-    if (selectedNumber == -1) {
-        System.out.println("Quitting. Goodbye!");
-        System.exit(0);
-    } if (scanner.nextInt() < 1) {
-        System.out.println("Please only input 1-10");
-        
-    } if (scanner.nextInt() > 10) {
-        System.out.println("Please only input 1-10");
+    while (!validNumber) {
+        System.out.print(playerName + ", select a number between 1-10 (or enter -1 to quit): ");
+
+        // Check if the input is an integer
+        if (!scanner.hasNextInt()) {
+            System.out.println("Invalid input. Please enter a number.");
+            scanner.next(); // Consume the invalid input
+            continue;
+        }
+
+        selectedNumber = scanner.nextInt();
+
+        // Check for quit condition
+        if (selectedNumber == -1) {
+            System.out.println("Quitting. Goodbye!");
+            System.exit(0);
+        }
+
+        // Validate the number is within the correct range
+        if (selectedNumber < 1 || selectedNumber > 10) {
+            System.out.println("Please only input a number between 1 and 10.");
+        } else if (usedNumbers.contains(selectedNumber)) {
+            System.out.println("This number has already been chosen. Please choose a different number.");
+        } else {
+            validNumber = true;
+        }
     }
+
     usedNumbers.add(selectedNumber);
     return selectedNumber;
-    }
+}
 
 
 
