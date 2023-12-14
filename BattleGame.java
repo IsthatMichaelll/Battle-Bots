@@ -176,7 +176,16 @@ private static void performRound() {
     int player1Choice = selectNumber(1);
     int player2Choice = selectNumber(2);
 
-    int attacker = (Math.abs(player1Choice - random.nextInt(10) + 1) <= Math.abs(player2Choice - random.nextInt(10) + 1)) ? 1 : 2;
+    // Determine the attacker based on who chose the higher number
+    int attacker;
+    if (player1Choice == player2Choice) {
+        // In case of a tie, randomly decide the attacker
+        attacker = random.nextBoolean() ? 1 : 2;
+        System.out.println("Both players chose the same number. Randomly selecting the attacker for this round.");
+    } else {
+        attacker = player1Choice > player2Choice ? 1 : 2;
+    }
+
     if (attacker == 1) {
         performAttack(player1Character, player2Character, player1Choice, rounds);
     } else {
@@ -187,12 +196,9 @@ private static void performRound() {
     System.out.println(player2Name + " Health: " + player2Character.health);
 
     if (rounds == 3) {
-        System.out.println("Round 3! Round's winner can use their ability next round!");
-    } if (rounds == 3) {
         winnerOfRound3 = attacker == 1 ? player1Character : player2Character;
         System.out.println("Round 3 completed! " + (attacker == 1 ? player1Name : player2Name) + " can use their ability in the next round!");
     }
-    
 }
 
 // Created a variable that is equal to the selectNumber method. This will make both players pick a number 1 - 10.
@@ -262,10 +268,6 @@ private static int selectNumber(int player) {
         // Validate the number is within the correct range
         if (selectedNumber < 1 || selectedNumber > 10) {
             System.out.println("Please only input a number between 1 and 10.");
-        } else if (usedNumbers.contains(selectedNumber)) {
-            System.out.println("This number has already been chosen. Please choose a different number.");
-        } else {
-            validNumber = true;
         }
     }
 

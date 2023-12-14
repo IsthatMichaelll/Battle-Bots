@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "BattleGame",
+            "request": "launch",
+            "mainClass": "BattleGame",
+            "projectName": "Battle-Bots_68bb345f"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
