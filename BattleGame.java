@@ -44,7 +44,6 @@ public class BattleGame {
 // A class named BattleGame is declared. This will be the main class.
 // An static array name characters is created with 5 character objects. Each object has its own attributes.
 // The static array will hold instances of the character class throughout the Battle game class.
-// The static array is with the class itself.
 // Created a new object of the character class that will be passed to the constructor (create an instance of a class object) of the character class.
 
 static Scanner scanner = new Scanner(System.in);
@@ -160,7 +159,7 @@ private static void displayPlayerMenu(int player) {
     }
     
     private static void showInstructions() {
-        System.out.println("\nWelcome to Battle Arena! Here, you first enter your desired name, choose your champion, and choose a number. Whoever's number is higher than the other player wins the round and can attack. Round 4 is where things get interesting! Will you be able to win it all?\n");
+        System.out.println("\nWelcome to Battle Arena! Here, you first enter your desired name, choose your champion, and choose a number.A random number is chosen, winner can Attack. Round 4 is where things get interesting! Will you be able to win it all?\n");
         displayBattleMenu();
     }
  
@@ -188,19 +187,15 @@ static Character winnerOfRound3 = null;
 
 
 private static void performRound() {
-    System.out.println("Round " + rounds);
+    System.out.println("\nRound " + rounds);
     int player1Choice = selectNumber(1);
     int player2Choice = selectNumber(2);
+    int randomNumber = random.nextInt(10) + 1;
 
-    // Determine the attacker based on who chose the higher number
-    int attacker;
-    if (player1Choice == player2Choice) {
-        // In case of a tie, randomly decide the attacker
-        attacker = random.nextBoolean() ? 1 : 2;
-        System.out.println("Both players chose the same number. Randomly selecting the attacker for this round.");
-    } else {
-        attacker = player1Choice > player2Choice ? 1 : 2;
-    }
+    int player1Difference = Math.abs(player1Choice - randomNumber);
+    int player2Difference = Math.abs(player2Choice - randomNumber);
+
+    int attacker = player1Difference <= player2Difference ? 1 : 2;
 
     if (attacker == 1) {
         performAttack(player1Character, player2Character, player1Choice, rounds);
@@ -213,7 +208,7 @@ private static void performRound() {
 
     if (rounds == 3) {
         winnerOfRound3 = attacker == 1 ? player1Character : player2Character;
-        System.out.println("Round 3 completed! " + (attacker == 1 ? player1Name : player2Name) + " can use their ability in the next round!");
+        System.out.println("\nRound 3 completed! " + (attacker == 1 ? player1Name : player2Name) + " can use their ability in the next round!");
     }
 }
 
@@ -222,7 +217,7 @@ private static void performRound() {
 // (player1Choice - random.nextInt(10)+ 1): whatever number player 1 picks will be subtracted by the random number generated and then 1
 // will be added to that. Calculating the difference between both number.
 // random.nextInt(10) + 1 , will generate a random number.
-
+// whoever is closer to choosen random number winner
 // The same will be done for player 2.
 // Created a ternary operator to compare both numbers by both players. Whoever is closer wins.
 // Created a if-else statement with a condition that calls the method performAttack if attacker is equal to player 1 if not the player 2.
