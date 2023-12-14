@@ -161,6 +161,7 @@ private static void displayPlayerMenu(int player) {
     
     private static void showInstructions() {
         System.out.println("\nWelcome to Battle Arena! Here, you first enter your desired name, choose your champion, and choose a number. Whoever's number is higher than the other player wins the round and can attack. Round 4 is where things get interesting! Will you be able to win it all?\n");
+        displayBattleMenu();
     }
  
     // Created a method called displayBattleMenu that will display the option to start the game or quit.
