@@ -167,8 +167,10 @@ private static void displayPlayerMenu(int player) {
 // Created a startBattle method that continue to execute rounds depending on the players health
 // Created a while loop with a condition that continues as long as both player 1 and player 2&#39;s health is greater than 1.
 // As the rounds increase the loop will call the performRound method.
-// Created a ternary operator ? : as a shortcut for a if-else statement. Basically checks if what player has the higher health
-// whoever does wins.
+// Created a ternary operator ? : as a shortcut for a if-else statement. Basically checks if what player has the higher health whoever does wins.
+static Character winnerOfRound3 = null;
+
+
 private static void performRound() {
     System.out.println("Round " + rounds);
     int player1Choice = selectNumber(1);
@@ -183,6 +185,14 @@ private static void performRound() {
 
     System.out.println(player1Name + " Health: " + player1Character.health);
     System.out.println(player2Name + " Health: " + player2Character.health);
+
+    if (rounds == 3) {
+        System.out.println("Round 3! Round's winner can use their ability next round!");
+    } if (rounds == 3) {
+        winnerOfRound3 = attacker == 1 ? player1Character : player2Character;
+        System.out.println("Round 3 completed! " + (attacker == 1 ? player1Name : player2Name) + " can use their ability in the next round!");
+    }
+    
 }
 
 // Created a variable that is equal to the selectNumber method. This will make both players pick a number 1 - 10.
@@ -196,32 +206,34 @@ private static void performRound() {
 // Created a if-else statement with a condition that calls the method performAttack if attacker is equal to player 1 if not the player 2.
 
 private static void performAttack(Character attacker, Character defender, int selectedNumber, int round) {
-    String attackerName = (attacker == player1Character) ? player1Name : player2Name;
-    System.out.println(attackerName + "'s Turn:");
-    System.out.println("Player " + (attacker == player1Character ? "1" : "2") + "'s Turn:");
-    if (round <= 3) {
-        int damage = 2;
-        defender.health -= damage;
-        System.out.println(attacker.name + " attacks with weapon for " + damage + " damage!");
+    System.out.println("Player " + (attacker == player1Character ? player1Name : player2Name) + "'s Turn:");
+
+    int damage;
+    if (round == 4 && attacker == winnerOfRound3) {
+        damage = 8; // Ability damage for winner of Round 3
+        System.out.println(attacker.name + " uses their ability for " + damage + " damage!");
     } else {
-        int damage = 2;
-        if (round == 4) {
-            damage = 5;
-            System.out.println(attacker.name + " attacks with ability for " + damage + " damage!");
-        } else {
-            System.out.println(attacker.name + " attacks with weapon for " + damage + " damage!");
-        }
-        defender.health -= damage;
+        // Default attack logic based on the round
+        damage = calculateDefaultDamage(round);
+        System.out.println(attacker.name + " attacks with weapon for " + damage + " damage!");
     }
+
+    defender.health -= damage;
 }
 
-
+private static int calculateDefaultDamage(int round) {
+    if (round <= 3) {
+        return 2; // For rounds 1, 2, and 3, the damage is 2
+    } else {
+        return 5; // For rounds above 3, the damage is 5
+    }
+}
 // Created a method called performAttack. This method will handle the amount of damage being dealt with weapons and ability&#39;s for each round.
 // This method will be private to the class, with parameters that the method will take. ( objects of the character class )
 // Used the ternary operator to print whose turn it is.
 // Used a if statement with a condition that if the round is less than or equal to 3, set the damage to 2.
 // else-if the round is equal to 4 set the damage equal to 5.
-// The defender&#39;s health will be subtracted equal to the damage in each round.
+// The defenders health will be subtracted equal to the damage in each round.
 
 
 private static int selectNumber(int player) {
