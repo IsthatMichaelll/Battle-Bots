@@ -142,16 +142,25 @@ private static void displayPlayerMenu(int player) {
     
     private static void displayBattleMenu() {
         System.out.println("1. Start Battle");
-        System.out.println("2. Quit");
+        System.out.println("2. Show Instructions");
+        System.out.println("3. Quit");
         int choice = getUserChoice();
+    
         if (choice == 1) {
             startBattle();
         } else if (choice == 2) {
-            displayPlayerMenu(1);
+            showInstructions();
+        } else if (choice == 3) {
+            System.out.println("Quitting. Goodbye!");
+            System.exit(0);
         } else {
             System.out.println("Invalid choice. Please try again.");
             displayBattleMenu();
         }
+    }
+    
+    private static void showInstructions() {
+        System.out.println("\nWelcome to Battle Arena! Here, you first enter your desired name, choose your champion, and choose a number. Whoever's number is higher than the other player wins the round and can attack. Round 4 is where things get interesting! Will you be able to win it all?\n");
     }
  
     // Created a method called displayBattleMenu that will display the option to start the game or quit.
