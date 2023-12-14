@@ -17,7 +17,7 @@ this.health = health;
 }
 // A constructor for the character class is created. The constructors is defined with parameters: String name, weapon, ability, and health.
 // parameter name, weapon, ability, and health are being assigned values to the instance variables name, weapon, ability, and health.
-// Used &#39;this&#39; to mark the difference between the parameter and the instance.
+// Used this; to mark the difference between the parameter and the instance.
 
 
 public void displayInfo() {
@@ -34,11 +34,11 @@ System.out.println();
 
 public class BattleGame {
    static Character[] characters = {
-           new Character("Character 1", "Ax", "Grenade", 15),
-           new Character("Character 2", "Sword", "Rocket Launcher", 15),
-           new Character("Character 3", "Spear", "Poison Arrow", 15),
-           new Character("Character 4", "Bow and Arrow", "Stun Grenade", 15),
-           new Character("Character 5", "Knife", "Turret", 15)
+           new Character("Brute", "Ax", "Grenade", 15),
+           new Character("Attacker", "Sword", "Rocket Launcher", 15),
+           new Character("Archer", "Spear", "Poison Arrow", 15),
+           new Character("Tactician", "Bow and Arrow", "Stun Grenade", 15),
+           new Character("Camper", "Knife", "Turret", 15)
    };
 
 // A class named BattleGame is declared. This will be the main class.
@@ -53,6 +53,8 @@ static Random random = new Random();
 // These static objects will be shared across all the methods in the class without creating an instance of the main class.
 static Character player1Character;
 static Character player2Character;
+static String player1Name;
+static String player2Name;
 // Created static variables to store the characters for player 1 and player 2.
 // Static variables will need to be accessed across different method calls.
 static Queue<Integer> turnOrder = new LinkedList<>();
@@ -87,7 +89,14 @@ public static void main(String[] args) {
 // Created a if statement with a condition that checks if the user input is a x.
 // if it is true then the displayPlayerMenu method will be called, if not then it will print error message.
 private static void displayPlayerMenu(int player) {
-    System.out.println(" Player " + player + ", select your character:");
+    if (player == 1 && player1Name == null) {
+        System.out.print("Enter name for Player 1: ");
+        player1Name = scanner.next();
+    } else if (player == 2 && player2Name == null) {
+        System.out.print("Enter name for Player 2: ");
+        player2Name = scanner.next();
+
+    }System.out.println(" Player " + player + ", select your character:");
     for (int i = 0; i < characters.length; i++) {
         characters[i].displayInfo();
     }
@@ -110,7 +119,7 @@ private static void displayPlayerMenu(int player) {
             displayBattleMenu();
         }
     }
-}
+    }
 
     // Created a method called displayPlayerMenu, which should display all 5 characters, option to quit or to change character.
     // created a parameter in the method to represent the player number.
@@ -148,11 +157,12 @@ private static void displayPlayerMenu(int player) {
     
     private static void startBattle() {
         System.out.println("Let the battle begin!");
-        while (player1Character.health > 1 && player2Character.health > 1) {
+        while (player1Character.health > 0 && player2Character.health > 0) {
             rounds++;
             performRound();
         }
-        System.out.println("Game over! Player " + (player1Character.health > player2Character.health ? "1" : "2") + " wins!");
+        String winnerName = player1Character.health > player2Character.health ? player1Name : player2Name;
+        System.out.println("Game over! " + winnerName + " wins!");
     }
 // Created a startBattle method that continue to execute rounds depending on the players health
 // Created a while loop with a condition that continues as long as both player 1 and player 2&#39;s health is greater than 1.
@@ -163,16 +173,16 @@ private static void performRound() {
     System.out.println("Round " + rounds);
     int player1Choice = selectNumber(1);
     int player2Choice = selectNumber(2);
-    
+
     int attacker = (Math.abs(player1Choice - random.nextInt(10) + 1) <= Math.abs(player2Choice - random.nextInt(10) + 1)) ? 1 : 2;
     if (attacker == 1) {
         performAttack(player1Character, player2Character, player1Choice, rounds);
     } else {
         performAttack(player2Character, player1Character, player2Choice, rounds);
     }
-    
-    System.out.println("Player 1 Health: " + player1Character.health);
-    System.out.println("Player 2 Health: " + player2Character.health);
+
+    System.out.println(player1Name + " Health: " + player1Character.health);
+    System.out.println(player2Name + " Health: " + player2Character.health);
 }
 
 // Created a variable that is equal to the selectNumber method. This will make both players pick a number 1 - 10.
@@ -186,6 +196,8 @@ private static void performRound() {
 // Created a if-else statement with a condition that calls the method performAttack if attacker is equal to player 1 if not the player 2.
 
 private static void performAttack(Character attacker, Character defender, int selectedNumber, int round) {
+    String attackerName = (attacker == player1Character) ? player1Name : player2Name;
+    System.out.println(attackerName + "'s Turn:");
     System.out.println("Player " + (attacker == player1Character ? "1" : "2") + "'s Turn:");
     if (round <= 3) {
         int damage = 2;
@@ -213,16 +225,22 @@ private static void performAttack(Character attacker, Character defender, int se
 
 
 private static int selectNumber(int player) {
+    String playerName = player == 1 ? player1Name : player2Name;
+    System.out.print(playerName + ", select a number between 1-10 (or enter -1 to quit): ");
     System.out.print("Player " + player + ", select a number between 1-10 (or enter -1 to quit): ");
     int selectedNumber = scanner.nextInt();
     if (selectedNumber == -1) {
         System.out.println("Quitting. Goodbye!");
         System.exit(0);
+    } if (scanner.nextInt() < 1) {
+        System.out.println("Please only input 1-10");
+        
+    } if (scanner.nextInt() > 10) {
+        System.out.println("Please only input 1-10");
     }
-    
     usedNumbers.add(selectedNumber);
     return selectedNumber;
-}
+    }
 
 
 
