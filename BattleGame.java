@@ -81,8 +81,14 @@ public static void main(String[] args) {
     } else {
         System.out.println("Invalid entry. Exiting.");
     }
-}
+     // Sort characters by name
+     Arrays.sort(characters, Comparator.comparing(c -> c.name));
 
+     // Display sorted characters
+     for (Character character : characters) {
+         character.displayInfo();
+}
+}
 // This is the main method. The program will start with this method first.
 // Created two statements to tell the user to press to start.
 // Created a string scanner.next method to allow the user to press a string (x)to start
@@ -250,28 +256,22 @@ private static int selectNumber(int player) {
     while (!validNumber) {
         System.out.print(playerName + ", select a number between 1-10 (or enter -1 to quit): ");
 
-        // Check if the input is an integer
         if (!scanner.hasNextInt()) {
             System.out.println("Invalid input. Please enter a number.");
             scanner.next(); // Consume the invalid input
             continue;
         }
 
-        selectedNumber = scanner.nextInt();
+        selectedNumber = scanner.nextInt(); // Read the integer input
 
-        // Check for quit condition
-        if (selectedNumber == -1) {
-            System.out.println("Quitting. Goodbye!");
-            System.exit(0);
-        }
-
-        // Validate the number is within the correct range
-        if (selectedNumber < 1 || selectedNumber > 10) {
-            System.out.println("Please only input a number between 1 and 10.");
+        // Check if the number is within the valid range or is the quit command
+        if ((selectedNumber >= 1 && selectedNumber <= 10) || selectedNumber == -1) {
+            validNumber = true; // Break the loop if the number is valid
+        } else {
+            System.out.println("Number must be between 1 and 10, or -1 to quit.");
         }
     }
 
-    usedNumbers.add(selectedNumber);
     return selectedNumber;
 }
 
